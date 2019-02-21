@@ -1,13 +1,21 @@
 <?php
 /**
  * Created by PhpStorm.
- * User: trans
+ * User: Pedro 
  * Date: 18/02/2019
  * Time: 22:14
  */
+
+//Database configuration
 	$host = 'localhost';
 	$username = 'londoners';
 	$password = 'London123!';
 	$dbname = 'Londoners';
-	$con = new mysqli($host, $username, $password, $dbname);
+//Create connection
+	$db = new mysqli($host, $username, $password, $dbname);
+
+//check connection
+if($db->connect_error){
+	die ("Connection failed: " . $db->connect_error);
+}
 ?>
