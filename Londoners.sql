@@ -16,6 +16,17 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
+DROP USER IF EXISTS 'londoners'@'localhost' ;
+
+DROP DATABASE IF EXISTS Londoners;
+CREATE DATABASE Londoners;
+
+
+
+grant all privileges on Londoners.* to 'londoners'@'localhost' identified by 'London123!' ;
+
+
+use Londoners;
 --
 -- Database: `Londoners`
 --
@@ -27,7 +38,7 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `admin_master` (
-  `admin_master_id` int(11) NOT NULL,
+  `admin_master_id` int(11) NOT NULL primary key AUTO_INCREMENT ,
   `admin_user_id` int(11) NOT NULL,
   `first_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `last_name` varchar(50) CHARACTER SET utf16 COLLATE utf16_unicode_ci NOT NULL
@@ -40,7 +51,7 @@ CREATE TABLE `admin_master` (
 --
 
 CREATE TABLE `category_master` (
-  `category_id` int(11) NOT NULL,
+  `category_id` int(11) NOT NULL primary key AUTO_INCREMENT,
   `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_by` int(11) NOT NULL,
@@ -54,9 +65,9 @@ CREATE TABLE `category_master` (
 --
 
 CREATE TABLE `country` (
-  `country_id` int(11) NOT NULL,
-  `code` int(11) NOT NULL,
-  `name` int(11) NOT NULL
+  `country_id` int(11) NOT NULL primary key AUTO_INCREMENT,
+  `code` varchar(3) NOT NULL,
+  `name` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
@@ -66,7 +77,7 @@ CREATE TABLE `country` (
 --
 
 CREATE TABLE `location_master` (
-  `location_id` int(11) NOT NULL,
+  `location_id` int(11) NOT NULL primary key AUTO_INCREMENT,
   `location_code` char(3) NOT NULL,
   `location_name` varchar(100) NOT NULL,
   `description` varchar(255) DEFAULT NULL,
@@ -80,7 +91,7 @@ CREATE TABLE `location_master` (
 --
 
 CREATE TABLE `login_history` (
-  `login_history_id` int(11) NOT NULL,
+  `login_history_id` int(11) NOT NULL primary key AUTO_INCREMENT,
   `login_user_id` int(11) NOT NULL,
   `sign_in_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `sign_out_time` timestamp NULL DEFAULT NULL,
@@ -94,7 +105,7 @@ CREATE TABLE `login_history` (
 --
 
 CREATE TABLE `member_profile` (
-  `member_id` int(11) NOT NULL,
+  `member_id` int(11) NOT NULL primary key AUTO_INCREMENT,
   `first_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `last_name` varchar(100) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `address` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -117,7 +128,7 @@ CREATE TABLE `member_profile` (
 --
 
 CREATE TABLE `post_action_type` (
-  `action_type_id` int(11) NOT NULL,
+  `action_type_id` int(11) NOT NULL primary key AUTO_INCREMENT,
   `type_code` char(2) NOT NULL,
   `type_name` varchar(25) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -129,7 +140,7 @@ CREATE TABLE `post_action_type` (
 --
 
 CREATE TABLE `post_master` (
-  `post_master_id` int(11) NOT NULL,
+  `post_master_id` int(11) NOT NULL primary key AUTO_INCREMENT,
   `member_id` int(11) NOT NULL,
   `category_id` int(11) NOT NULL,
   `location_id` int(11) NOT NULL,
@@ -151,7 +162,7 @@ CREATE TABLE `post_master` (
 --
 
 CREATE TABLE `post_threads` (
-  `post_thread_id` int(11) NOT NULL,
+  `post_thread_id` int(11) NOT NULL primary key AUTO_INCREMENT,
   `post_master_id` int(11) NOT NULL,
   `member_id` int(11) NOT NULL,
   `previous_thread_id` int(11) NOT NULL,
@@ -166,9 +177,9 @@ CREATE TABLE `post_threads` (
 --
 
 CREATE TABLE `province` (
-  `province_id` int(11) NOT NULL,
-  `code` int(11) NOT NULL,
-  `name` int(11) NOT NULL,
+  `province_id` int(11) NOT NULL primary key AUTO_INCREMENT,
+  `code` varchar(2) NOT NULL,
+  `name` varchar(60) NOT NULL,
   `country_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -179,7 +190,7 @@ CREATE TABLE `province` (
 --
 
 CREATE TABLE `user` (
-  `user_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL primary key AUTO_INCREMENT,
   `user_name` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(20) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `user_type` int(11) NOT NULL,
@@ -194,7 +205,7 @@ CREATE TABLE `user` (
 --
 
 CREATE TABLE `user_type` (
-  `user_type_id` int(11) NOT NULL,
+  `user_type_id` int(11) NOT NULL primary key AUTO_INCREMENT,
   `user_type_code` char(4) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `user_type_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -204,42 +215,9 @@ CREATE TABLE `user_type` (
 --
 
 --
--- Indexes for table `admin_master`
---
-ALTER TABLE `admin_master`
-  ADD PRIMARY KEY (`admin_master_id`),
-  ADD KEY `admin_user_id` (`admin_user_id`);
-
---
--- Indexes for table `category_master`
---
-ALTER TABLE `category_master`
-  ADD PRIMARY KEY (`category_id`);
-
---
--- Indexes for table `country`
---
-ALTER TABLE `country`
-  ADD PRIMARY KEY (`country_id`);
-
---
--- Indexes for table `location_master`
---
-ALTER TABLE `location_master`
-  ADD PRIMARY KEY (`location_id`);
-
---
--- Indexes for table `login_history`
---
-ALTER TABLE `login_history`
-  ADD PRIMARY KEY (`login_history_id`),
-  ADD KEY `login_user_id` (`login_user_id`);
-
---
 -- Indexes for table `member_profile`
 --
-ALTER TABLE `member_profile`
-  ADD PRIMARY KEY (`member_id`),
+ALTER TABLE `member_profile`   
   ADD KEY `province_id` (`province_id`),
   ADD KEY `country_id` (`country_id`),
   ADD KEY `user_id` (`user_id`);
@@ -247,15 +225,12 @@ ALTER TABLE `member_profile`
 --
 -- Indexes for table `post_action_type`
 --
-ALTER TABLE `post_action_type`
-  ADD PRIMARY KEY (`action_type_id`);
+
 
 --
 -- Indexes for table `post_master`
 --
-ALTER TABLE `post_master`
-  ADD PRIMARY KEY (`post_master_id`),
-  ADD KEY `post_master_id` (`post_master_id`),
+ALTER TABLE `post_master`    
   ADD KEY `member_id` (`member_id`),
   ADD KEY `category_id` (`category_id`),
   ADD KEY `location_id` (`location_id`),
@@ -265,8 +240,7 @@ ALTER TABLE `post_master`
 --
 -- Indexes for table `post_threads`
 --
-ALTER TABLE `post_threads`
-  ADD PRIMARY KEY (`post_thread_id`),
+ALTER TABLE `post_threads`  
   ADD UNIQUE KEY `member_id` (`member_id`),
   ADD KEY `post_master_id` (`post_master_id`),
   ADD KEY `member_id_2` (`member_id`),
@@ -275,23 +249,17 @@ ALTER TABLE `post_threads`
 --
 -- Indexes for table `province`
 --
-ALTER TABLE `province`
-  ADD PRIMARY KEY (`province_id`),
+ALTER TABLE `province`  
   ADD KEY `country_id` (`country_id`);
 
 --
 -- Indexes for table `user`
 --
-ALTER TABLE `user`
-  ADD PRIMARY KEY (`user_id`),
+ALTER TABLE `user`  
   ADD KEY `user_type` (`user_type`),
   ADD KEY `created_by` (`created_by`);
 
---
--- Indexes for table `user_type`
---
-ALTER TABLE `user_type`
-  ADD PRIMARY KEY (`user_type_id`);
+
 
 --
 -- Constraints for dumped tables
@@ -348,3 +316,41 @@ ALTER TABLE `user`
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+-- set primary data 
+-- insert country
+insert into country values (Null,'CA', 'Canada');
+
+-- insert province
+INSERT INTO province (province_id, name, code,country_id)
+VALUES 
+    (NULL, 'Alberta', 'AB',1),
+    (NULL, 'British Columbia', 'BC',1),
+    (NULL, 'Manitoba', 'MB',1),
+    (NULL, 'New Brunswick', 'NB',1),
+    (NULL, 'Newfoundland and Labrador', 'NL',1),
+    (NULL, 'Northwest Territories', 'NT',1),
+    (NULL, 'Nova Scotia', 'NS',1),
+    (NULL, 'Nunavut', 'NU',1),
+    (NULL, 'Ontario', 'ON',1),
+    (NULL, 'Prince Edward Island', 'PE',1),
+    (NULL, 'Quebec', 'QC',1),
+    (NULL, 'Saskatchewan', 'SK',1),
+    (NULL, 'Yukon', 'YT',1);
+
+
+-- insert user_type
+
+insert into user_type values (null,'mbr', 'Member');
+insert into user_type values (null,'adm', 'Admin');
+insert into user_type values (null,'cmr','Content Manager');
+
+-- insert post_action_type
+
+insert into post_action_type values (null,'N', 'New');
+insert into post_action_type values (null,'R', 'Reply');
+insert into post_action_type values (null,'C', 'comments');
+
+
+insert into location_master values (null,'N', 'London North','London',current_timestamp);
+
